@@ -89,6 +89,12 @@
       "relation": "oneToMany",
       "target": "api::inventory.inventory",
       "mappedBy": "productId"
+    },
+    "baskets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::basket.basket",
+      "mappedBy": "productId"
     }
   }
 }
