@@ -373,13 +373,13 @@ export interface ApiInventoryInventory extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    InventoryId: Attribute.UID &
+    inventoryId: Attribute.UID &
       Attribute.Required &
       Attribute.SetMinMaxLength<{
         minLength: 36;
         maxLength: 36;
       }>;
-    Status: Attribute.Enumeration<['Active', 'Inactive', 'Sold Out']> &
+    status: Attribute.Enumeration<['Active', 'Inactive', 'Sold Out']> &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -387,22 +387,22 @@ export interface ApiInventoryInventory extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<'Active'>;
-    Available: Attribute.Integer &
+    available: Attribute.Integer &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    WarehouseId: Attribute.Relation<
-      'api::inventory.inventory',
-      'manyToOne',
-      'api::warehouse.warehouse'
-    >;
-    ProductId: Attribute.Relation<
+    productId: Attribute.Relation<
       'api::inventory.inventory',
       'manyToOne',
       'api::product.product'
+    >;
+    warehouseId: Attribute.Relation<
+      'api::inventory.inventory',
+      'manyToOne',
+      'api::warehouse.warehouse'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -439,7 +439,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
     };
   };
   attributes: {
-    ProductId: Attribute.UID &
+    productId: Attribute.UID &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -450,7 +450,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
         minLength: 36;
         maxLength: 36;
       }>;
-    Name: Attribute.String &
+    product: Attribute.String &
       Attribute.Required &
       Attribute.Unique &
       Attribute.SetPluginOptions<{
@@ -461,14 +461,14 @@ export interface ApiProductProduct extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 80;
       }>;
-    Price: Attribute.Decimal &
+    price: Attribute.Decimal &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    Status: Attribute.Enumeration<['Active', 'Inactive', 'Sold Out']> &
+    status: Attribute.Enumeration<['Active', 'Inactive', 'Sold Out']> &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -476,21 +476,21 @@ export interface ApiProductProduct extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<'Active'>;
-    Available: Attribute.Integer &
+    available: Attribute.Integer &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    Image: Attribute.Media &
+    image: Attribute.Media &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    Inventories: Attribute.Relation<
+    inventories: Attribute.Relation<
       'api::product.product',
       'oneToMany',
       'api::inventory.inventory'
@@ -531,7 +531,7 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    WarehouseId: Attribute.UID &
+    warehouseId: Attribute.UID &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -542,7 +542,7 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
         minLength: 36;
         maxLength: 36;
       }>;
-    Warehouse: Attribute.String &
+    warehouse: Attribute.String &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -552,7 +552,7 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 50;
       }>;
-    Address: Attribute.String &
+    address: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -561,11 +561,14 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 120;
       }>;
-    Inventories: Attribute.Relation<
+    inventories: Attribute.Relation<
       'api::warehouse.warehouse',
       'oneToMany',
       'api::inventory.inventory'
     >;
+    classification: Attribute.Enumeration<['Principal', 'Subsidiary']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'Principal'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

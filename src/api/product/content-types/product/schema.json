@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "ProductId": {
+    "productId": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -27,7 +27,7 @@
       "maxLength": 36,
       "minLength": 36
     },
-    "Name": {
+    "product": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -38,7 +38,7 @@
       "maxLength": 80,
       "unique": true
     },
-    "Price": {
+    "price": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -47,7 +47,7 @@
       "type": "decimal",
       "required": true
     },
-    "Status": {
+    "status": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -62,7 +62,7 @@
       "required": true,
       "default": "Active"
     },
-    "Available": {
+    "available": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -71,7 +71,7 @@
       "type": "integer",
       "required": true
     },
-    "Image": {
+    "image": {
       "type": "media",
       "multiple": true,
       "required": true,
@@ -84,11 +84,11 @@
         }
       }
     },
-    "Inventories": {
+    "inventories": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::inventory.inventory",
-      "mappedBy": "ProductId"
+      "mappedBy": "productId"
     }
   }
 }

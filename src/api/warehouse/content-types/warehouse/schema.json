@@ -11,7 +11,7 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "WarehouseId": {
+    "warehouseId": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -22,7 +22,7 @@
       "minLength": 36,
       "required": true
     },
-    "Warehouse": {
+    "warehouse": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -32,7 +32,7 @@
       "maxLength": 50,
       "required": true
     },
-    "Address": {
+    "address": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -41,11 +41,20 @@
       "type": "string",
       "maxLength": 120
     },
-    "Inventories": {
+    "inventories": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::inventory.inventory",
-      "mappedBy": "WarehouseId"
+      "mappedBy": "warehouseId"
+    },
+    "classification": {
+      "type": "enumeration",
+      "enum": [
+        "Principal",
+        "Subsidiary"
+      ],
+      "required": true,
+      "default": "Principal"
     }
   }
 }

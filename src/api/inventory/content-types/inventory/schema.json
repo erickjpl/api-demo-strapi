@@ -12,13 +12,13 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "InventoryId": {
+    "inventoryId": {
       "type": "uid",
       "required": true,
       "minLength": 36,
       "maxLength": 36
     },
-    "Status": {
+    "status": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -33,7 +33,7 @@
       "required": true,
       "default": "Active"
     },
-    "Available": {
+    "available": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -42,17 +42,17 @@
       "type": "integer",
       "required": true
     },
-    "WarehouseId": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::warehouse.warehouse",
-      "inversedBy": "Inventories"
-    },
-    "ProductId": {
+    "productId": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::product.product",
-      "inversedBy": "Inventories"
+      "inversedBy": "inventories"
+    },
+    "warehouseId": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::warehouse.warehouse",
+      "inversedBy": "inventories"
     }
   }
 }
