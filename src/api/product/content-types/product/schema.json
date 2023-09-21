@@ -90,11 +90,11 @@
       "target": "api::inventory.inventory",
       "mappedBy": "productId"
     },
-    "baskets": {
+    "checkouts": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::basket.basket",
-      "mappedBy": "productId"
+      "target": "api::checkout.checkout",
+      "mappedBy": "checkoutId"
     }
   }
 }

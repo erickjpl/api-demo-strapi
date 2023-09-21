@@ -713,30 +713,32 @@ export interface ApiBasketBasket extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    productId: Attribute.Relation<
-      'api::basket.basket',
-      'manyToOne',
-      'api::product.product'
-    >;
-    quantity: Attribute.Integer &
-      Attribute.Required &
+    shippingAddress: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
+      }> &
+      Attribute.SetMinMaxLength<{
+        maxLength: 120;
       }>;
-    price: Attribute.Decimal &
-      Attribute.Required &
+    billingInformation: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
+      }> &
+      Attribute.SetMinMaxLength<{
+        maxLength: 120;
       }>;
-    discount: Attribute.Decimal &
+    promoCode: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
+      }> &
+      Attribute.SetMinMaxLength<{
+        maxLength: 36;
       }>;
     total: Attribute.Decimal &
       Attribute.Required &
@@ -745,7 +747,21 @@ export interface ApiBasketBasket extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    status: Attribute.Enumeration<['Active', 'Returned', 'Canceled']> &
+    status: Attribute.Enumeration<
+      [
+        'Empty',
+        'Active',
+        'Inactive',
+        'Abandoned',
+        'Saved for Later',
+        'On Hold',
+        'Pending Review',
+        'Ready for Checkout',
+        'In Favorite',
+        'Archived',
+        'Fulfilled'
+      ]
+    > &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -753,6 +769,47 @@ export interface ApiBasketBasket extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<'Active'>;
+    paymentStatus: Attribute.Enumeration<
+      [
+        'Pending Payment',
+        'Payment Processing',
+        'Paid',
+        'Approved',
+        'Declined',
+        'Cancelled',
+        'Refund',
+        'Refunded',
+        'Waiting for Confirmation',
+        'Payment Issue',
+        'Payment Error',
+        'Payment Overdue',
+        'Authorization Pending',
+        'Bank Confirmation Pending',
+        'Partial Payment',
+        'Scheduled Payment'
+      ]
+    > &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.DefaultTo<'Pending Payment'>;
+    notes: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    checkouts: Attribute.Relation<
+      'api::basket.basket',
+      'oneToMany',
+      'api::checkout.checkout'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -783,6 +840,7 @@ export interface ApiCheckoutCheckout extends Schema.CollectionType {
     singularName: 'checkout';
     pluralName: 'checkouts';
     displayName: 'Checkout';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -804,10 +862,10 @@ export interface ApiCheckoutCheckout extends Schema.CollectionType {
         minLength: 36;
         maxLength: 36;
       }>;
-    productId: Attribute.Relation<
+    basketId: Attribute.Relation<
       'api::checkout.checkout',
       'manyToOne',
-      'api::product.product'
+      'api::basket.basket'
     >;
     quantity: Attribute.Integer &
       Attribute.Required &
@@ -1002,10 +1060,10 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'oneToMany',
       'api::inventory.inventory'
     >;
-    baskets: Attribute.Relation<
+    checkouts: Attribute.Relation<
       'api::product.product',
       'oneToMany',
-      'api::basket.basket'
+      'api::checkout.checkout'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

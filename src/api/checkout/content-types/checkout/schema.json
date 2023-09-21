@@ -4,7 +4,8 @@
   "info": {
     "singularName": "checkout",
     "pluralName": "checkouts",
-    "displayName": "Checkout"
+    "displayName": "Checkout",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -26,11 +27,11 @@
       "minLength": 36,
       "maxLength": 36
     },
-    "productId": {
+    "basketId": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::product.product",
-      "inversedBy": "baskets"
+      "target": "api::basket.basket",
+      "inversedBy": "checkouts"
     },
     "quantity": {
       "pluginOptions": {

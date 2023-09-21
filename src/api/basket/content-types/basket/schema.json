@@ -32,6 +32,112 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "baskets"
+    },
+    "shippingAddress": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": false,
+      "maxLength": 120
+    },
+    "billingInformation": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": false,
+      "maxLength": 120
+    },
+    "promoCode": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": false,
+      "maxLength": 36
+    },
+    "total": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true,
+      "type": "decimal"
+    },
+    "status": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Empty",
+        "Active",
+        "Inactive",
+        "Abandoned",
+        "Saved for Later",
+        "On Hold",
+        "Pending Review",
+        "Ready for Checkout",
+        "In Favorite",
+        "Archived",
+        "Fulfilled"
+      ],
+      "required": true,
+      "default": "Active"
+    },
+    "paymentStatus": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Pending Payment",
+        "Payment Processing",
+        "Paid",
+        "Approved",
+        "Declined",
+        "Cancelled",
+        "Refund",
+        "Refunded",
+        "Waiting for Confirmation",
+        "Payment Issue",
+        "Payment Error",
+        "Payment Overdue",
+        "Authorization Pending",
+        "Bank Confirmation Pending",
+        "Partial Payment",
+        "Scheduled Payment"
+      ],
+      "required": true,
+      "default": "Pending Payment"
+    },
+    "notes": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": false,
+      "maxLength": 100
+    },
+    "checkouts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::checkout.checkout",
+      "mappedBy": "basketId"
     }
   }
 }
