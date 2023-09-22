@@ -847,10 +847,15 @@ export interface ApiCheckoutCheckout extends Schema.CollectionType {
         minLength: 36;
         maxLength: 36;
       }>;
-    basketId: Attribute.Relation<
+    basket: Attribute.Relation<
       'api::checkout.checkout',
       'manyToOne',
       'api::basket.basket'
+    >;
+    inventory: Attribute.Relation<
+      'api::checkout.checkout',
+      'manyToOne',
+      'api::inventory.inventory'
     >;
     quantity: Attribute.Integer &
       Attribute.Required &
@@ -929,6 +934,16 @@ export interface ApiInventoryInventory extends Schema.CollectionType {
         minLength: 36;
         maxLength: 36;
       }>;
+    product: Attribute.Relation<
+      'api::inventory.inventory',
+      'manyToOne',
+      'api::product.product'
+    >;
+    warehouse: Attribute.Relation<
+      'api::inventory.inventory',
+      'manyToOne',
+      'api::warehouse.warehouse'
+    >;
     status: Attribute.Enumeration<['Active', 'Inactive', 'Sold Out']> &
       Attribute.Required &
       Attribute.SetPluginOptions<{
@@ -944,16 +959,6 @@ export interface ApiInventoryInventory extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    productId: Attribute.Relation<
-      'api::inventory.inventory',
-      'manyToOne',
-      'api::product.product'
-    >;
-    warehouseId: Attribute.Relation<
-      'api::inventory.inventory',
-      'manyToOne',
-      'api::warehouse.warehouse'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

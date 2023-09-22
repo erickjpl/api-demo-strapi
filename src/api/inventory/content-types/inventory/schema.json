@@ -18,6 +18,16 @@
       "minLength": 36,
       "maxLength": 36
     },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product"
+    },
+    "warehouse": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::warehouse.warehouse"
+    },
     "status": {
       "pluginOptions": {
         "i18n": {
@@ -41,16 +51,6 @@
       },
       "type": "integer",
       "required": true
-    },
-    "productId": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product.product"
-    },
-    "warehouseId": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::warehouse.warehouse"
     }
   }
 }

@@ -27,10 +27,15 @@
       "minLength": 36,
       "maxLength": 36
     },
-    "basketId": {
+    "basket": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::basket.basket"
+    },
+    "inventory": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::inventory.inventory"
     },
     "quantity": {
       "pluginOptions": {

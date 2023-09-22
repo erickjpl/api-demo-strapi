@@ -15,7 +15,7 @@ export const checkAvailable = async (inventory: number, available: number) => {
 const searchProduct = async (inventory: number) => {
   return await strapi.db.query('api::inventory.inventory').findOne({
     where: { id: inventory },
-    populate: ['productId']
+    populate: ['product']
   })
 }
 
