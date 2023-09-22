@@ -27,12 +27,6 @@
       "minLength": 36,
       "maxLength": 36
     },
-    "userId": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "baskets"
-    },
     "shippingAddress": {
       "pluginOptions": {
         "i18n": {
@@ -132,12 +126,6 @@
       "type": "string",
       "required": false,
       "maxLength": 100
-    },
-    "checkouts": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::checkout.checkout",
-      "mappedBy": "basketId"
     }
   }
 }

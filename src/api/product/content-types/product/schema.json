@@ -83,18 +83,6 @@
           "localized": true
         }
       }
-    },
-    "inventories": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::inventory.inventory",
-      "mappedBy": "productId"
-    },
-    "checkouts": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::checkout.checkout",
-      "mappedBy": "checkoutId"
     }
   }
 }

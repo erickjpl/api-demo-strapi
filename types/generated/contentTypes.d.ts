@@ -658,11 +658,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    baskets: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::basket.basket'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -708,11 +703,6 @@ export interface ApiBasketBasket extends Schema.CollectionType {
         minLength: 36;
         maxLength: 36;
       }>;
-    userId: Attribute.Relation<
-      'api::basket.basket',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
     shippingAddress: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -805,11 +795,6 @@ export interface ApiBasketBasket extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 100;
       }>;
-    checkouts: Attribute.Relation<
-      'api::basket.basket',
-      'oneToMany',
-      'api::checkout.checkout'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1055,16 +1040,6 @@ export interface ApiProductProduct extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    inventories: Attribute.Relation<
-      'api::product.product',
-      'oneToMany',
-      'api::inventory.inventory'
-    >;
-    checkouts: Attribute.Relation<
-      'api::product.product',
-      'oneToMany',
-      'api::checkout.checkout'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1131,11 +1106,6 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 120;
       }>;
-    inventories: Attribute.Relation<
-      'api::warehouse.warehouse',
-      'oneToMany',
-      'api::inventory.inventory'
-    >;
     classification: Attribute.Enumeration<['Principal', 'Subsidiary']> &
       Attribute.Required &
       Attribute.DefaultTo<'Principal'>;

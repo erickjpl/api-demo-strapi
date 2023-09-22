@@ -41,12 +41,6 @@
       "type": "string",
       "maxLength": 120
     },
-    "inventories": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::inventory.inventory",
-      "mappedBy": "warehouseId"
-    },
     "classification": {
       "type": "enumeration",
       "enum": [

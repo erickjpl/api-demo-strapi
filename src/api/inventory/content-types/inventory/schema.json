@@ -45,14 +45,12 @@
     "productId": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::product.product",
-      "inversedBy": "inventories"
+      "target": "api::product.product"
     },
     "warehouseId": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::warehouse.warehouse",
-      "inversedBy": "inventories"
+      "target": "api::warehouse.warehouse"
     }
   }
 }

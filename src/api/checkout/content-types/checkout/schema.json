@@ -30,8 +30,7 @@
     "basketId": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::basket.basket",
-      "inversedBy": "checkouts"
+      "target": "api::basket.basket"
     },
     "quantity": {
       "pluginOptions": {
