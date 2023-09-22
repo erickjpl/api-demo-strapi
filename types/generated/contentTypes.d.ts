@@ -703,6 +703,11 @@ export interface ApiBasketBasket extends Schema.CollectionType {
         minLength: 36;
         maxLength: 36;
       }>;
+    user: Attribute.Relation<
+      'api::basket.basket',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     shippingAddress: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
