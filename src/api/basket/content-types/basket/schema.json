@@ -27,6 +27,11 @@
       "minLength": 36,
       "maxLength": 36
     },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
     "shippingAddress": {
       "pluginOptions": {
         "i18n": {
