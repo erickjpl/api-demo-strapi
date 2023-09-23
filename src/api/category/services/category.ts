@@ -5,13 +5,11 @@
 import { factories } from '@strapi/strapi';
 
 export default factories.createCoreService('api::category.category', {
-  async updateProducts(newCategory: number, oldCategory?: number) {
-    const newResponse = await super.findOne(newCategory);
-    console.info({ newResponse })
+  async updateProducts (category: number) {
+    const count = await strapi.db.query("api::product.product").count({ where: { category: category } })
+    console.info({ updateProducts: category, count })
 
-    if (!oldCategory) return
-
-    const oldResponse = await super.find(newCategory);
-    console.info({ oldResponse })
+    const update = await strapi.entityService.update('api::category.category', category, { data: { products: count } })
+    console.info({ update })
   }
 });

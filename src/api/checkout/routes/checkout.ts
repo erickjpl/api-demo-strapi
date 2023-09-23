@@ -6,8 +6,8 @@ import { factories } from '@strapi/strapi';
 
 export default factories.createCoreRouter('api::checkout.checkout', {
   prefix: '',
-  only: ['find', 'findOne'],
-  except: ['create', 'update', 'delete'],
+  only: ['find', 'findOne', 'create', 'update', 'delete'],
+  except: [],
   config: {
     find: {
       auth: false,

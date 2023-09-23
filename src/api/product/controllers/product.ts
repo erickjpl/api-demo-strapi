@@ -3,28 +3,43 @@
  */
 
 import { factories } from '@strapi/strapi'
+import { parseBody } from '../../helpers/transform'
+import { validationBodyData } from '../../helpers/validationBodyData'
 
 export default factories.createCoreController('api::product.product', ({ strapi }) => ({
   async create (ctx) {
-    const response = await super.create(ctx);
+    await this.validateQuery(ctx)
 
-    await strapi.service('api::category.category').updateProducts(response.data.category);
+    if (validationBodyData(ctx, 'category'))
+      return ctx.badRequest(`The category is missing.`, { category: 'The category is required.' })
 
-    return response;
+    const sanitizedQuery = await this.sanitizeQuery(ctx)
+    const { data, files } = parseBody(ctx)
+
+    const entity = await strapi
+      .service('api::product.product')
+      .create({ ...sanitizedQuery, data, files })
+
+    const sanitizedEntity = await this.sanitizeOutput(entity, ctx)
+
+    return this.transformResponse(sanitizedEntity)
   },
   async update (ctx) {
-    const response = await super.update(ctx);
+    const { id } = ctx.params
+    await this.validateQuery(ctx)
 
-    await strapi.service('api::category.category').updateProducts(response.data.category);
+    if (validationBodyData(ctx, 'category'))
+      return ctx.badRequest(`The category is missing.`, { category: 'The category is required.' })
 
-    return response;
-  },
-  async delate (ctx) {
-    const response = await super.delate(ctx);
-    console.info({ response })
-    // await strapi.service('api::category.category').update(response.data.id, { products: 0 });
-    // create (entityId, params = {})
+    const sanitizedQuery = await this.sanitizeQuery(ctx)
+    const { data, files } = parseBody(ctx)
 
-    return response;
+    const entity = await strapi
+      .service('api::product.product')
+      .update(id, { ...sanitizedQuery, data, files })
+
+    const sanitizedEntity = await this.sanitizeOutput(entity, ctx)
+
+    return this.transformResponse(sanitizedEntity)
   }
 }))
