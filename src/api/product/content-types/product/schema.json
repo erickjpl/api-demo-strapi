@@ -16,17 +16,6 @@
     }
   },
   "attributes": {
-    "productId": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "uid",
-      "required": true,
-      "maxLength": 36,
-      "minLength": 36
-    },
     "product": {
       "pluginOptions": {
         "i18n": {
@@ -37,6 +26,11 @@
       "required": true,
       "maxLength": 80,
       "unique": true
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category"
     },
     "price": {
       "pluginOptions": {

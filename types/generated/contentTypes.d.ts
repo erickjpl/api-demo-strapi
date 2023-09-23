@@ -824,6 +824,47 @@ export interface ApiBasketBasket extends Schema.CollectionType {
   };
 }
 
+export interface ApiCategoryCategory extends Schema.CollectionType {
+  collectionName: 'categories';
+  info: {
+    singularName: 'category';
+    pluralName: 'categories';
+    displayName: 'Category';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetMinMaxLength<{
+        maxLength: 80;
+      }>;
+    products: Attribute.Integer & Attribute.Required;
+    description: Attribute.String &
+      Attribute.SetMinMaxLength<{
+        maxLength: 180;
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCheckoutCheckout extends Schema.CollectionType {
   collectionName: 'checkouts';
   info: {
@@ -999,17 +1040,6 @@ export interface ApiProductProduct extends Schema.CollectionType {
     };
   };
   attributes: {
-    productId: Attribute.UID &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 36;
-        maxLength: 36;
-      }>;
     product: Attribute.String &
       Attribute.Required &
       Attribute.Unique &
@@ -1021,6 +1051,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 80;
       }>;
+    category: Attribute.Relation<
+      'api::product.product',
+      'manyToOne',
+      'api::category.category'
+    >;
     price: Attribute.Decimal &
       Attribute.Required &
       Attribute.SetPluginOptions<{
@@ -1154,6 +1189,7 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::basket.basket': ApiBasketBasket;
+      'api::category.category': ApiCategoryCategory;
       'api::checkout.checkout': ApiCheckoutCheckout;
       'api::inventory.inventory': ApiInventoryInventory;
       'api::product.product': ApiProductProduct;

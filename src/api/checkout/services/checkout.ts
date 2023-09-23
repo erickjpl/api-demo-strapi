@@ -5,7 +5,7 @@
 import { factories } from '@strapi/strapi'
 
 export default factories.createCoreService('api::checkout.checkout', ({ strapi }) => ({
-  async create (ctx, basket) {
+  async update (ctx, basket) {
     const checkout = ctx.request.body.data.checkout
 
     const response = await strapi.db.query('api::checkout.checkout').findOne({
@@ -14,8 +14,6 @@ export default factories.createCoreService('api::checkout.checkout', ({ strapi }
         inventory: checkout.inventory
       }
     })
-
-    console.info({ ...response, ...checkout, basket })
 
     if (!response)
       await super.create({ data: { ...response, ...checkout, basket } })
