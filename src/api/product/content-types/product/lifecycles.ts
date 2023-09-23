@@ -1,7 +1,7 @@
 const { ValidationError } = require('@strapi/utils').errors
 
 function validateCategory (data) {
-  if (!data.category.connect) {
+  if (data.category.connect.length === 0) {
     throw new ValidationError('You cannot send an empty category. Please validate the field.')
   }
 }
@@ -15,14 +15,9 @@ export default {
   afterCreate: async (event) => {
     const { data } = event.params
 
-    const { id: newCategory } = data.category.connect.shift()
+    const newCategory = data.category.connect.shift()
 
-    await strapi.service('api::category.category').updateProducts(newCategory)
-  },
-  beforeUpdate: async (event) => {
-    const { data } = event.params
-
-    validateCategory(data)
+    await strapi.service('api::category.category').updateProducts(newCategory.id)
   },
   afterUpdate: async (event) => {
     const { data } = event.params
@@ -31,16 +26,9 @@ export default {
     newCategory && await strapi.service('api::category.category').updateProducts(newCategory.id)
 
     const oldCategory = data.category.disconnect.shift()
-    oldCategory && await strapi.service('api::category.category').updateProducts(oldCategory)
-  },
-  beforeDelete: async (event) => {
-    const { data } = event.params
-
-    console.log({ category: data.category, connect: data.category.connect, disconnect: data.category.disconnect })
+    oldCategory && await strapi.service('api::category.category').updateProducts(oldCategory.id)
   },
   afterDelete: async (event) => {
-    const { data } = event.params
-
-    console.log({ category: data.category, connect: data.category.connect, disconnect: data.category.disconnect })
+    console.log({ afterDelete: event.params, result: event.result })
   }
 }
