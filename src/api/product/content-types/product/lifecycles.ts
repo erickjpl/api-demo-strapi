@@ -22,10 +22,10 @@ export default {
   afterUpdate: async (event) => {
     const { data } = event.params
 
-    const newCategory = data.category.connect.shift()
+    const newCategory = data.category?.connect?.shift()
     newCategory && await strapi.service('api::category.category').updateProducts(newCategory.id)
 
-    const oldCategory = data.category.disconnect.shift()
+    const oldCategory = data.category?.disconnect?.shift()
     oldCategory && await strapi.service('api::category.category').updateProducts(oldCategory.id)
   },
   afterDelete: async (event) => {
