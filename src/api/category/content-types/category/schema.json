@@ -25,6 +25,11 @@
     "description": {
       "type": "string",
       "maxLength": 180
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "category",
+      "required": true
     }
   }
 }

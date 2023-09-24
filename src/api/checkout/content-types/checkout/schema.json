@@ -16,17 +16,6 @@
     }
   },
   "attributes": {
-    "checkoutId": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "uid",
-      "required": true,
-      "minLength": 36,
-      "maxLength": 36
-    },
     "basket": {
       "type": "relation",
       "relation": "manyToOne",

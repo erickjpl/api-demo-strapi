@@ -12,12 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "inventoryId": {
-      "type": "uid",
-      "required": true,
-      "minLength": 36,
-      "maxLength": 36
-    },
     "product": {
       "type": "relation",
       "relation": "manyToOne",

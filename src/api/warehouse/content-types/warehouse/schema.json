@@ -11,16 +11,15 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "warehouseId": {
+    "slug": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
       "type": "uid",
-      "maxLength": 36,
-      "minLength": 36,
-      "required": true
+      "required": true,
+      "targetField": "warehouse"
     },
     "warehouse": {
       "pluginOptions": {

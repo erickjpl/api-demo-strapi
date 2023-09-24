@@ -692,17 +692,6 @@ export interface ApiBasketBasket extends Schema.CollectionType {
     };
   };
   attributes: {
-    basketId: Attribute.UID &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 36;
-        maxLength: 36;
-      }>;
     user: Attribute.Relation<
       'api::basket.basket',
       'manyToOne',
@@ -847,6 +836,8 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 180;
       }>;
+    slug: Attribute.UID<'api::category.category', 'category'> &
+      Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -882,17 +873,6 @@ export interface ApiCheckoutCheckout extends Schema.CollectionType {
     };
   };
   attributes: {
-    checkoutId: Attribute.UID &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 36;
-        maxLength: 36;
-      }>;
     basket: Attribute.Relation<
       'api::checkout.checkout',
       'manyToOne',
@@ -974,12 +954,6 @@ export interface ApiInventoryInventory extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    inventoryId: Attribute.UID &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 36;
-        maxLength: 36;
-      }>;
     product: Attribute.Relation<
       'api::inventory.inventory',
       'manyToOne',
@@ -1085,6 +1059,13 @@ export interface ApiProductProduct extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    slug: Attribute.UID<'api::product.product', 'product'> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1121,16 +1102,12 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    warehouseId: Attribute.UID &
+    slug: Attribute.UID<'api::warehouse.warehouse', 'warehouse'> &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 36;
-        maxLength: 36;
       }>;
     warehouse: Attribute.String &
       Attribute.Required &

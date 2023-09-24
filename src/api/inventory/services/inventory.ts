@@ -7,11 +7,12 @@ import { checkAvailable } from '../helpers/product-inventory'
 
 export default factories.createCoreService('api::inventory.inventory', () => ({
   async create (entityId, params) {
+    console.info('createCoreController', {entityId, params})
     const result = await super.create(entityId, params)
 
     const { id, available } = result
 
-    checkAvailable(id, available)
+    // checkAvailable(id, available)
 
     return result
   },
@@ -21,7 +22,7 @@ export default factories.createCoreService('api::inventory.inventory', () => ({
 
     const { id, available } = result
 
-    checkAvailable(id, available)
+    // checkAvailable(id, available)
 
     return result
   }
