@@ -5,29 +5,17 @@ const helper = useProductHelper()
 export default {
   beforeCreate: async (event) => {
     const { data } = event.params
-
-    if (!Number.isInteger(data.category))
-      helper.validateCategory(data.category)
+    helper.validateCategory(data.category)
   },
-  afterCreate: async (event) => {
-    const { data } = event.params
-
-    let newCategory
-    if (Number.isInteger(data.category)) newCategory = data.category
-    else {
-      const { id } = data.category.connect.shift()
-      newCategory = id
-    }
-    newCategory && await strapi.service('api::category.category').updateProducts(newCategory)
+  afterCreate: async () => {
+    global.categoryId && await strapi.service('api::category.category').updateProducts(global.categoryId)
+    global.categoryId = undefined
   },
   beforeUpdate: async (event) => {
-    global.categoryId = undefined
-    global.categoryOldId = undefined
-
     const { where, data } = event.params
 
     const categoryEntity = await helper.searchCategoryRelatedToProduct(where.id)
-    if (!categoryEntity) helper.validateCategory(data.category)
+    if (!categoryEntity) helper.validateCategory(data.category, true)
 
     if (data.hasOwnProperty('category')) {
       helper.validateCategory(data.category)
@@ -47,8 +35,7 @@ export default {
     await helper.assignProductCategoryToGlobalState(where.id)
   },
   afterDelete: async () => {
-    const categoryId = global.categoryId
-    categoryId && await strapi.service('api::category.category').updateProducts(categoryId)
+    global.categoryId && await strapi.service('api::category.category').updateProducts(global.categoryId)
     global.categoryId = undefined
   }
 }

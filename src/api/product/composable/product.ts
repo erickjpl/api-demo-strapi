@@ -2,19 +2,23 @@ import { errors } from '@strapi/utils'
 const { ValidationError } = errors
 
 export function useProductHelper () {
-  function validateCategory (category) {
+  function validateCategory (category, categoryEntityEmpty: boolean = false) {
     let categoryId
     if (Number.isInteger(category)) categoryId = category
-    else {
+    else if (categoryEntityEmpty) {
       const connect = category.connect.reduce((acc, current) => (acc || current), undefined)
-      categoryId = connect.id
+      categoryId = connect && connect.id
+    } else {
+      const connect = category.connect.reduce((acc, current) => (acc || current), undefined)
+      const disconnect = category.disconnect.reduce((acc, current) => (acc || current), undefined)
+      categoryId = (!connect && !disconnect) ? true : connect.id
     }
 
     if (!categoryId) {
       throw new ValidationError(`The category is missing.`, { category: 'The category is required.' })
     }
 
-    global.categoryId = categoryId
+    return false
   }
 
   async function searchCategoryRelatedToProduct (productId: number) {
