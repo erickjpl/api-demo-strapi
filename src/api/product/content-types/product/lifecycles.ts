@@ -21,40 +21,26 @@ export default {
     newCategory && await strapi.service('api::category.category').updateProducts(newCategory)
   },
   beforeUpdate: async (event) => {
+    global.categoryId = undefined
+    global.categoryOldId = undefined
+
     const { where, data } = event.params
 
-    const category = await helper.searchCategoryRelatedToProduct(where.id)
-    !category && helper.validateCategory(data.category)
+    const categoryEntity = await helper.searchCategoryRelatedToProduct(where.id)
+    if (!categoryEntity) helper.validateCategory(data.category)
 
-    // Se usa cuando la peticion es por la api
-    if (data.hasOwnProperty('category') && Number.isInteger(data.category)) {
-      if (data.category !== category.id)
-        global.categoryOldId = category.id
-      else
-        global.categoryOldId = undefined
-    }
-
-    // Se usa cuando la peticion es enviada por el dashboard
-    const disconnect = data.category?.disconnect?.shift()
-    disconnect && helper.validateCategory(data.category)
+    if (data.hasOwnProperty('category')) {
+      helper.validateCategory(data.category)
+      const disconnect = data.category?.disconnect?.reduce((acc, current) => (acc || current), undefined) || categoryEntity
+      global.categoryOldId = disconnect && disconnect.id
+    } else
+      global.categoryId = undefined
   },
-  afterUpdate: async (event) => {
-    const { data } = event.params
-
-    // Se usa cuando la peticion es por la api
-    if (global.categoryOldId) {
-      await strapi.service('api::category.category').updateProducts(global.categoryOldId)
-      await strapi.service('api::category.category').updateProducts(data.category)
-      global.categoryOldId = undefined
-    }
-
-    // Se usa cuando la peticion es enviada por el dashboard
-    const newCategory = data.category?.connect?.shift()
-    newCategory && await strapi.service('api::category.category').updateProducts(newCategory.id)
-
-    // Se usa cuando la peticion es enviada por el dashboard
-    const oldCategory = data.category?.disconnect?.shift()
-    oldCategory && await strapi.service('api::category.category').updateProducts(oldCategory.id)
+  afterUpdate: async () => {
+    global.categoryId && await strapi.service('api::category.category').updateProducts(global.categoryId)
+    global.categoryOldId && await strapi.service('api::category.category').updateProducts(global.categoryOldId)
+    global.categoryId = undefined
+    global.categoryOldId = undefined
   },
   beforeDelete: async (event) => {
     const { where } = event.params

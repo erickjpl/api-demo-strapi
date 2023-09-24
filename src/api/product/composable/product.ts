@@ -3,9 +3,18 @@ const { ValidationError } = errors
 
 export function useProductHelper () {
   function validateCategory (category) {
-    if (!category || category?.connect?.length === 0) {
+    let categoryId
+    if (Number.isInteger(category)) categoryId = category
+    else {
+      const connect = category.connect.reduce((acc, current) => (acc || current), undefined)
+      categoryId = connect.id
+    }
+
+    if (!categoryId) {
       throw new ValidationError(`The category is missing.`, { category: 'The category is required.' })
     }
+
+    global.categoryId = categoryId
   }
 
   async function searchCategoryRelatedToProduct (productId: number) {
