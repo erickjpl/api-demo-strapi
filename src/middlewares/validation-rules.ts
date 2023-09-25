@@ -2,9 +2,11 @@
  * `validator` middleware
  */
 
-import { Config, METHOD, METHOD_HTTP, TYPE_VALIDATION_RELATION, checkPropertyExistsInBody, validateRelations } from './config';
+import { Config, METHOD_HTTP, Modules } from "./interfaces"
+import { validBody } from "./config"
 
-export default (config: Config[]) => {
+
+export default (config: Config<Modules>[]) => {
   return async (ctx, next) => {
     const pathname = ctx.request.path
     const body = ctx.request.body.data || ctx.request.body
@@ -18,15 +20,7 @@ export default (config: Config[]) => {
       })
 
       if (method === setting.method && apply) {
-        if (method === METHOD.POST) {
-          checkPropertyExistsInBody(body, setting.propertiesRequired)
-
-          validateRelations(body, setting.relationsRequired, TYPE_VALIDATION_RELATION.CREATE)
-        }
-
-        if (method === METHOD.PUT) {
-          validateRelations(body, setting.relationsRequired, TYPE_VALIDATION_RELATION.UPDATE)
-        }
+        validBody(body, setting.validations)
       }
     })
 

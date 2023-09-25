@@ -1,26 +1,34 @@
 import { Config, METHOD } from "../../../middlewares/interfaces";
-import { Inventory } from "../interfaces/model";
+import { Product } from "../interfaces/model";
 
-export const rulesInventory: Config<Inventory>[] = [
+export const rulesProduct: Config<Product>[] = [
   {
-    path: ['api::inventory.inventory', 'inventories'],
+    path: ['api::product.product', 'products'],
     method: METHOD.PUT,
     validations: [
       {
-        attribute: 'warehouse',
+        attribute: 'product',
         rules: [
-          { rule: 'required' },
+          { rule: 'sometimes' },
           { rule: 'min_digits', value: 0 },
           { rule: 'numeric' }
         ]
       },
       {
-        attribute: 'product',
+        attribute: 'category',
         rules: [
-          { rule: 'required' },
+          { rule: 'sometimes' },
           { rule: 'min', value: 3 },
           { rule: 'max', value: 100 },
           { rule: 'string' }
+        ]
+      },
+      {
+        attribute: 'price',
+        rules: [
+          { rule: 'sometimes' },
+          { rule: 'min_digits', value: 0 },
+          { rule: 'numeric' }
         ]
       },
       {
