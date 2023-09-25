@@ -1,3 +1,5 @@
+import { METHOD } from "../src/middlewares/config";
+
 export default [
   'strapi::errors',
   {
@@ -23,13 +25,20 @@ export default [
   'strapi::favicon',
   'strapi::public',
   {
-    name: 'global::inventory',
-    config: {
-      relationsRequired: ['product', 'warehouse', 'available'],
-      propertiesRequired: ['product', 'warehouse'],
-      methods: ['POST', 'PUT', 'PATCH'],
-      uid: 'api::inventory.inventory',
-      module: 'inventories'
-    }
+    name: 'global::validations',
+    config: [
+      {
+        path: ['api::inventory.inventory', 'inventories'],
+        method: METHOD.POST,
+        propertiesRequired: ['product', 'warehouse', 'available'],
+        relationsRequired: ['product', 'warehouse'],
+      },
+      {
+        path: ['api::inventory.inventory/:id', 'inventories/:id'],
+        method: METHOD.PUT,
+        propertiesRequired: ['product', 'warehouse', 'available'],
+        relationsRequired: ['product', 'warehouse'],
+      }
+    ]
   }
 ];

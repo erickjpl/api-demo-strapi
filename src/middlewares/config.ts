@@ -2,19 +2,17 @@ import { errors } from '@strapi/utils'
 const { ValidationError } = errors
 
 export enum METHOD {
-  GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
-  DELETE = 'DELETE'
 }
 
 type Modules = Inventory
 type TYPE_STATUS = 'Active' | 'Inactive' | 'Sold Out'
 type TYPE_VALIDATION = 'create' | 'update'
-export type METHOD_HTTP = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type METHOD_HTTP = 'POST' | 'PUT'
 export enum TYPE_VALIDATION_RELATION { CREATE = 'create', UPDATE = 'update' }
 
-export interface Config { methods: string[], uid: string, module: string, relationsRequired: string[], propertiesRequired: string[] }
+export interface Config { path: string[], method: string, relationsRequired: string[], propertiesRequired: string[] }
 
 interface Position { before: number, after: number, start: boolean, end: boolean }
 interface Reordering { id: number, position?: Position }
