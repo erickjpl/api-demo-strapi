@@ -1,0 +1,123 @@
+digits:value
+The integer under validation must have an exact length of value.
+El número entero bajo validación debe tener una longitud exacta de valor.
+
+digits_between:min,max
+The integer validation must have a length between the given min and max.
+La validación de enteros debe tener una longitud entre el mínimo y el máximo dados.
+
+email
+The field under validation must be formatted as an email address.
+El campo bajo validación debe tener el formato de una dirección de correo electrónico.
+
+filled
+The field under validation must not be empty when it is present.
+El campo bajo validación no debe estar vacío cuando esté presente.
+
+gt:field
+The field under validation must be greater than the given field or value.
+  The two fields must be of the same type.
+  Strings, numerics, arrays, and files are evaluated using the same conventions as the size rule.
+El campo bajo validación debe ser mayor que el campo o valor dado.
+  Los dos campos deben ser del mismo tipo.
+  Las cadenas, números, matrices y archivos se evalúan utilizando las mismas convenciones que la regla de tamaño.
+
+gte:field
+The field under validation must be greater than or equal to the given field or value.
+  The two fields must be of the same type.
+  Strings, numerics, arrays, and files are evaluated using the same conventions as the size rule.
+El campo bajo validación debe ser mayor o igual al campo o valor dado.
+  Los dos campos deben ser del mismo tipo.
+  Las cadenas, números, matrices y archivos se evalúan utilizando las mismas convenciones que la regla de tamaño.
+
+integer
+The field under validation must be an integer.
+El campo bajo validación debe ser un número entero.
+
+lt:field
+The field under validation must be less than the given field.
+  The two fields must be of the same type.
+  Strings, numerics, arrays, and files are evaluated using the same conventions as the size rule.
+El campo bajo validación debe ser menor que el campo dado.
+  Los dos campos deben ser del mismo tipo.
+  Las cadenas, números, matrices y archivos se evalúan utilizando las mismas convenciones que la regla de tamaño.
+
+lte:field
+The field under validation must be less than or equal to the given field.
+  The two fields must be of the same type.
+  Strings, numerics, arrays, and files are evaluated using the same conventions as the size rule.
+El campo bajo validación debe ser menor o igual al campo dado.
+  Los dos campos deben ser del mismo tipo.
+  Las cadenas, números, matrices y archivos se evalúan utilizando las mismas convenciones que la regla de tamaño.
+
+max:value
+The field under validation must be less than or equal to a maximum value.
+  Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+El campo bajo validación debe ser menor o igual a un valor máximo.
+  Las cadenas, números, matrices y archivos se evalúan de la misma manera que la regla de tamaño.
+
+max_digits:value
+The integer under validation must have a maximum length of value.
+El número entero bajo validación debe tener una longitud máxima de valor.
+
+min:value
+The field under validation must have a minimum value.
+  Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+El campo bajo validación debe tener un valor mínimo.
+  Las cadenas, números, matrices y archivos se evalúan de la misma manera que la regla de tamaño.
+
+min_digits:value
+The integer under validation must have a minimum length of value.
+El número entero bajo validación debe tener una longitud mínima de valor.
+
+nullable
+The field under validation may be null.
+El campo bajo validación puede ser nulo.
+
+numeric
+The field under validation must be numeric.
+El campo bajo validación debe ser numérico.
+
+password
+The field under validation must match the authenticated user's password.
+El campo bajo validación debe coincidir con la contraseña del usuario autenticado.
+
+present
+The field under validation must exist in the input data.
+El campo bajo validación debe existir en los datos de entrada.
+
+required
+The field under validation must be present in the input data and not empty.
+  A field is "empty" if it meets one of the following criteria:
+  - The value is null.
+  - The value is an empty string.
+  - The value is an empty array or empty Countable object.
+  - The value is an uploaded file with no path.
+El campo bajo validación debe estar presente en los datos de entrada y no vacío.
+  Un campo está "vacío" si cumple uno de los siguientes criterios:
+  - El valor es nulo.
+  - El valor es una cadena vacía.
+  - El valor es una matriz vacía o un objeto contable vacío.
+  - El valor es un archivo cargado sin ruta.
+
+size:value
+The field under validation must have a size matching the given value.
+  For string data, value corresponds to the number of characters.
+  For numeric data, value corresponds to a given integer value (the attribute must also have the numeric or integer rule).
+  For an array, size corresponds to the count of the array.
+  For files, size corresponds to the file size in kilobytes.
+El campo bajo validación debe tener un tamaño que coincida con el valor dado.
+  Para datos de cadena, el valor corresponde al número de caracteres.
+  Para datos numéricos, el valor corresponde a un valor entero dado (el atributo también debe tener la regla numérica o entera).
+  Para una matriz, el tamaño corresponde al recuento de la matriz.
+  Para los archivos, el tamaño corresponde al tamaño del archivo en kilobytes.
+
+string
+The field under validation must be a string.
+El campo bajo validación debe ser una cadena.
+
+sometimes
+In some situations, you may wish to run validation checks against a field only if that field is present in the data being validated.
+  To quickly accomplish this, add the sometimes rule to your rule list:
+En algunas situaciones, es posible que desee ejecutar comprobaciones de validación en un campo solo si ese campo está presente en los datos que se están validando.
+  Para lograr esto rápidamente, agregue la regla a veces a su lista de reglas

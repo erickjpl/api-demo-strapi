@@ -1,3 +1,4 @@
+import { rulesInventory } from "../src/api/inventory/rules";
 import { METHOD } from "../src/middlewares/config";
 
 export default [
@@ -64,5 +65,9 @@ export default [
         relationsRequired: ['basket', 'inventory'],
       }
     ]
+  },
+  {
+    name: 'global::validation-rules',
+    config: rulesInventory
   }
 ];
