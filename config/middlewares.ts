@@ -22,4 +22,14 @@ export default [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+  {
+    name: 'global::inventory',
+    config: {
+      relationsRequired: ['product', 'warehouse', 'available'],
+      propertiesRequired: ['product', 'warehouse'],
+      methods: ['POST', 'PUT', 'PATCH'],
+      uid: 'api::inventory.inventory',
+      module: 'inventories'
+    }
+  }
 ];

@@ -1,16 +1,17 @@
 
 'use strict'
 
-import winston, { format } from 'winston'
-const { prettyPrint } = format
+import { winston, formats } from '@strapi/logger'
+const { prettyPrint, levelFilter } = formats
 
 export default [
   {
     transports: [
       new winston.transports.Console({
-        level: 'http',
+        level: 'dev',
         format: winston.format.combine(
-          prettyPrint({ colorize: true })
+          levelFilter('dev'),
+          prettyPrint({ timestamps: 'YYYY-MM-DD hh:mm:ss.SSS' })
         ),
       }),
     ],
