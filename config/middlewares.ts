@@ -28,6 +28,18 @@ export default [
     name: 'global::validations',
     config: [
       {
+        path: ['api::product.product', 'products'],
+        method: METHOD.POST,
+        propertiesRequired: ['product', 'price', 'available', 'category'],
+        relationsRequired: ['category'],
+      },
+      {
+        path: ['api::product.product/:id', 'products/:id'],
+        method: METHOD.PUT,
+        propertiesRequired: ['product', 'price', 'available', 'category'],
+        relationsRequired: ['category'],
+      },
+      {
         path: ['api::inventory.inventory', 'inventories'],
         method: METHOD.POST,
         propertiesRequired: ['product', 'warehouse', 'available'],
@@ -38,6 +50,18 @@ export default [
         method: METHOD.PUT,
         propertiesRequired: ['product', 'warehouse', 'available'],
         relationsRequired: ['product', 'warehouse'],
+      },
+      {
+        path: ['api::checkout.checkout', 'checkouts'],
+        method: METHOD.POST,
+        propertiesRequired: ['quantity', 'price', 'total', 'status'],
+        relationsRequired: ['basket', 'inventory'],
+      },
+      {
+        path: ['api::checkout.checkout/:id', 'checkouts/:id'],
+        method: METHOD.PUT,
+        propertiesRequired: ['quantity', 'price', 'total', 'status'],
+        relationsRequired: ['basket', 'inventory'],
       }
     ]
   }

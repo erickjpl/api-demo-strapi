@@ -25,7 +25,6 @@ export default (config: Config[]) => {
         }
 
         if (method === METHOD.PUT) {
-          console.info({ body })
           validateRelations(body, setting.relationsRequired, TYPE_VALIDATION_RELATION.UPDATE)
         }
       }
