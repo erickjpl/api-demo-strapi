@@ -9,7 +9,6 @@ export const rulesInventory: Config<Inventory>[] = [
       {
         attribute: 'warehouse',
         rules: [
-          { rule: 'required' },
           { rule: 'min_digits', value: 0 },
           { rule: 'numeric' }
         ]

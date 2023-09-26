@@ -8,7 +8,7 @@ function requestFail<T extends Modules> (errors: ValidationError<T>[]) {
 }
 
 export function validBody<T extends Modules> (body, validations: Validation<T>[]) {
-  validations.forEach(validation => {
+  const errors = validations.map(validation => {
     const { attribute, rules } = validation
     const property = getPropertyIfExist(body, attribute)
 
@@ -24,8 +24,10 @@ export function validBody<T extends Modules> (body, validations: Validation<T>[]
       return error ? { path: [attribute], message: message || MessageRulesEN[ruleName].replace(':attribute', String(property)).replace(':value', String(ruleValue)), name: 'ValidationError' } : null
     }).filter(error => !!error)
 
-    errors.length > 0 && requestFail(errors)
-  })
+    return errors.length > 0 ? errors : undefined
+  }).filter(error => !!error).flat()
+
+  errors.length > 0 && requestFail(errors)
 }
 
 function getPropertyIfExist<T extends Modules> (body: T, attribute: (keyof T)): T[keyof T] | undefined {
