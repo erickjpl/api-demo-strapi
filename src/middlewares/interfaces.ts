@@ -48,7 +48,7 @@ export enum MessageRulesEN {
   required = 'The :attribute field must be present in the input data and not empty.',
   size = 'The :attribute field must have a size of :value.',
   string = 'The :attribute field must be a string.',
-  sometimes = 'The validation does not apply.'
+  sometimes = 'The :attribute field must not be empty when present.'
 }
 
 export type Modules = Inventory | Product

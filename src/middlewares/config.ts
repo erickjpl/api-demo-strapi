@@ -8,14 +8,14 @@ function requestFail<T extends Modules> (errors: ValidationError<T>[]) {
 }
 
 export function validBody<T extends Modules> (body, validations: Validation<T>[]) {
-  const errors = validations.map(validation => {
+  validations.forEach(validation => {
     const { attribute, rules } = validation
     const property = getPropertyIfExist(body, attribute)
 
+    const sometimes = isSometimes(rules, attribute, property)
+    if (sometimes) return sometimes
     const required = isRequired(rules, attribute, property)
-    console.info({ required })
-    if (required !== true) return required
-    console.info({ message: `sigue validando esta propiedad ${property} luego de requerido` })
+    if (require) return required
 
     const errors = rules.map(rule => {
       const { rule: ruleName, value: ruleValue, message } = rule
@@ -24,26 +24,42 @@ export function validBody<T extends Modules> (body, validations: Validation<T>[]
       return error ? { path: [attribute], message: message || MessageRulesEN[ruleName].replace(':attribute', String(property)).replace(':value', String(ruleValue)), name: 'ValidationError' } : null
     }).filter(error => !!error)
 
-    return errors.length > 0 ? errors : null
-  }).filter(error => !!error)
-
-  console.info({ errors })
-  // errors.length > 0 && requestFail(errors)
+    errors.length > 0 && requestFail(errors)
+  })
 }
 
-function getPropertyIfExist<T extends Modules> (body, attribute: (keyof T)): string | null {
+function getPropertyIfExist<T extends Modules> (body: T, attribute: (keyof T)): T[keyof T] | undefined {
   const exists = attribute in body
 
-  return !exists ? null : body[attribute]
+  return !exists ? undefined : body[attribute]
 }
 
-function isRequired<T extends Modules> (rules: RuleConfig<Rule>[], attribute: (keyof T), propertyValue: string | null): boolean | ValidationError<T> {
-  const required = rules.find(rule => rule.rule === 'required')
-  const sometimes = rules.filter(rule => rule.rule === 'sometimes')
+function validPropertyValue<T extends Modules> (propertyValue?: T[keyof T]) {
+  return (typeof propertyValue === 'undefined') ||
+    (typeof propertyValue === 'object' && Object.keys(propertyValue).length === 0) ||
+    (typeof propertyValue === 'string' && propertyValue.length === 0)
+}
 
-  if (sometimes && !required && !propertyValue) return true
+function isSometimes<T extends Modules> (rules: RuleConfig<Rule>[], attribute: (keyof T), propertyValue?: T[keyof T]): undefined | ValidationError<T> {
+  const sometimesRule = rules.find(({ rule }) => rule === 'sometimes')
+  const invalid = validPropertyValue(propertyValue)
 
-  if (required && !propertyValue) {
+  if (sometimesRule && invalid) {
+    return {
+      path: [attribute],
+      message: MessageRulesEN.sometimes.replace(':attribute', String(attribute)),
+      name: 'ValidationError'
+    }
+  }
+
+  return undefined
+}
+
+function isRequired<T extends Modules> (rules: RuleConfig<Rule>[], attribute: (keyof T), propertyValue?: T[keyof T]): undefined | ValidationError<T> {
+  const requiredRule = rules.find(({ rule }) => rule === 'required')
+  const invalid = validPropertyValue(propertyValue)
+
+  if (requiredRule && invalid) {
     return {
       path: [attribute],
       message: MessageRulesEN.required.replace(':attribute', String(attribute)),
@@ -51,7 +67,7 @@ function isRequired<T extends Modules> (rules: RuleConfig<Rule>[], attribute: (k
     }
   }
 
-  return true
+  return undefined
 }
 
 function validate (property, ruleName, ruleValue) {
