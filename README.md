@@ -41,3 +41,21 @@ With this command, you can use the Strapi console to create controllers, service
 ```
 npx strapi generate
 ```
+
+## ⚙️ Example for relationships 
+
+To add or update a relationship you must send an object like the one seen in the example in the body of the request.
+
+```
+{
+  "data": {
+    "addRelated": {
+      "connect": [{ id: 1 }]
+    },
+    "updateRelated": {
+      "connect": [{ id: 2 }]
+      "disconnect": [{ id: 1 }]
+    }
+  }
+}
+```
