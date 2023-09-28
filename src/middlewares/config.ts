@@ -14,14 +14,14 @@ export function validBody<T extends Modules> (body, validations: Validation<T>[]
 
     const sometimes = isSometimes(rules, attribute, property)
     if (sometimes) return sometimes
-    const required = isRequired(rules, attribute, property)
-    if (require) return required
+    const hsaRequired = isRequired(rules, attribute, property)
+    if (hsaRequired) return hsaRequired
 
     const errors = rules.map(rule => {
       const { rule: ruleName, value: ruleValue, message } = rule
 
       const error = validate(property, ruleName, ruleValue)
-      return error ? { path: [attribute], message: message || MessageRulesEN[ruleName].replace(':attribute', String(property)).replace(':value', String(ruleValue)), name: 'ValidationError' } : null
+      return error ? { path: [attribute], message: message || MessageRulesEN[ruleName].replace(':attribute', String(attribute)).replace(':value', String(ruleValue)), name: 'ValidationError' } : null
     }).filter(error => !!error)
 
     return errors.length > 0 ? errors : undefined
@@ -44,9 +44,8 @@ function validPropertyValue<T extends Modules> (propertyValue?: T[keyof T]) {
 
 function isSometimes<T extends Modules> (rules: RuleConfig<Rule>[], attribute: (keyof T), propertyValue?: T[keyof T]): undefined | ValidationError<T> {
   const sometimesRule = rules.find(({ rule }) => rule === 'sometimes')
-  const invalid = validPropertyValue(propertyValue)
 
-  if (sometimesRule && invalid) {
+  if (sometimesRule && typeof propertyValue === undefined) {
     return {
       path: [attribute],
       message: MessageRulesEN.sometimes.replace(':attribute', String(attribute)),
@@ -58,7 +57,7 @@ function isSometimes<T extends Modules> (rules: RuleConfig<Rule>[], attribute: (
 }
 
 function isRequired<T extends Modules> (rules: RuleConfig<Rule>[], attribute: (keyof T), propertyValue?: T[keyof T]): undefined | ValidationError<T> {
-  const requiredRule = rules.find(({ rule }) => rule === 'required')
+  const requiredRule = rules.find(({ rule }) => rule === 'required' || rule === 'relation_creating' || rule === 'relation_updating')
   const invalid = validPropertyValue(propertyValue)
 
   if (requiredRule && invalid) {
@@ -73,6 +72,12 @@ function isRequired<T extends Modules> (rules: RuleConfig<Rule>[], attribute: (k
 }
 
 function validate (property, ruleName, ruleValue) {
+  const digits: number = property
+    ? typeof property === 'number'
+      ? property
+      : property.toString().length
+    : 0
+
   switch (ruleName) {
     case 'digits':
       return property.toString().length !== ruleValue
@@ -93,24 +98,24 @@ function validate (property, ruleName, ruleValue) {
     case 'max':
       return property > ruleValue
     case 'max_digits':
-      return property.toString().length > ruleValue
+      return digits > ruleValue
     case 'min':
       return property < ruleValue
     case 'min_digits':
-      return property.toString().length < ruleValue
+      return digits < ruleValue
     case 'nullable':
       return property === null
     case 'numeric':
       return !Number.isFinite(property)
     case 'password':
       return false
-    case 'present':
-      return false
-    case 'required':
-      return false
     case 'size':
-      return false
+      return digits === ruleValue
     case 'string':
       return typeof property === 'string'
+    case 'relation_creating':
+      return !property || property.connect.length === 0
+    case 'relation_updating':
+      return !property || property.connect.length === 0 || property.disconnect.length === 0
   }
 }

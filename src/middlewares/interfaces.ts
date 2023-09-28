@@ -48,7 +48,9 @@ export enum MessageRulesEN {
   required = 'The :attribute field must be present in the input data and not empty.',
   size = 'The :attribute field must have a size of :value.',
   string = 'The :attribute field must be a string.',
-  sometimes = 'The :attribute field must not be empty when present.'
+  sometimes = 'The :attribute field must not be empty when present.',
+  relation_creating = 'The :attribute field is required and you must submit its id within the connect array.',
+  relation_updating = 'The :attribute field is required and must send the identifier that you remove within the disconnection array and the identifier of the new record from the connection array.'
 }
 
 export type Modules = Inventory | Product
@@ -74,7 +76,9 @@ export type Rule =
   'required' |
   'size' |
   'string' |
-  'sometimes'
+  'sometimes' |
+  'relation_creating' |
+  'relation_updating'
 
 type RuleValue =
   'digits' |
