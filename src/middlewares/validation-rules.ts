@@ -2,7 +2,7 @@
  * `validator` middleware
  */
 
-import { Config, METHOD_HTTP, Modules } from "./interfaces"
+import { Config, METHOD_HTTP, Modules, NOT_VALIDATE, PATH_UPDATE_ADMIN } from "./interfaces"
 import { validBody } from "./config"
 
 
@@ -15,6 +15,9 @@ export default (config: Config<Modules>[]) => {
 
     config.forEach(setting => {
       const apply = setting.path.some(path => {
+        const noValidate = NOT_VALIDATE.find(path => pathname.includes(path))
+        if (noValidate) return false
+
         const myPath = path.includes(':id') ? path.replace(':id', id) : path
         return pathname.includes(myPath)
       })

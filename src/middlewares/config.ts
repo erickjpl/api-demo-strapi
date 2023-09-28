@@ -116,6 +116,9 @@ function validate (property, ruleName, ruleValue) {
     case 'relation_creating':
       return !property || property.connect.length === 0
     case 'relation_updating':
-      return !property || property.connect.length === 0 || property.disconnect.length === 0
+      if (property && 'connect' in property)
+        return property.connect.length > 0 && property.disconnect.length === 0
+
+      return false
   }
 }
