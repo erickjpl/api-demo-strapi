@@ -1,41 +1,36 @@
-import { useProductHelper } from "../../composable/product"
+import { searchCategoryRelatedToProduct } from "../../helpers/product"
 
-const helper = useProductHelper()
+let categoryId
 
 export default {
-  beforeCreate: async (event) => {
-    const { data } = event.params
-    helper.validateCategory(data.category)
-  },
-  afterCreate: async () => {
-    global.categoryId && await strapi.service('api::category.category').updateProducts(global.categoryId)
-    global.categoryId = undefined
-  },
-  beforeUpdate: async (event) => {
+  afterCreate: async (event) => {
     const { where, data } = event.params
 
-    const categoryEntity = await helper.searchCategoryRelatedToProduct(where.id)
-    if (!categoryEntity) helper.validateCategory(data.category, true)
-
-    if (data.hasOwnProperty('category')) {
-      helper.validateCategory(data.category)
-      const disconnect = data.category?.disconnect?.reduce((acc, current) => (acc || current), undefined) || categoryEntity
-      global.categoryOldId = disconnect && disconnect.id
-    } else
-      global.categoryId = undefined
+    if ('category' in data && 'connect' in data.category && data.category.connect.length) {
+      const connect = data.category.connect.reduce((acc, current) => (acc || current), undefined)
+      await strapi.service('api::category.category').updateProducts(connect.id)
+    }
   },
-  afterUpdate: async () => {
-    global.categoryId && await strapi.service('api::category.category').updateProducts(global.categoryId)
-    global.categoryOldId && await strapi.service('api::category.category').updateProducts(global.categoryOldId)
-    global.categoryId = undefined
-    global.categoryOldId = undefined
+  afterUpdate: async (event) => {
+    const { where, data } = event.params
+
+    if ('category' in data) {
+      if ('connect' in data.category && data.category.connect.length) {
+        const connect = data.category.connect.reduce((acc, current) => (acc || current), undefined)
+        await strapi.service('api::category.category').updateProducts(connect.id)
+      }
+
+      if ('disconnect' in data.category && data.category.disconnect.length) {
+        const disconnect = data.category.disconnect.reduce((acc, current) => (acc || current), undefined)
+        await strapi.service('api::category.category').updateProducts(disconnect.id)
+      }
+    }
   },
   beforeDelete: async (event) => {
     const { where } = event.params
-    await helper.assignProductCategoryToGlobalState(where.id)
+    categoryId = await searchCategoryRelatedToProduct(where.id)
   },
   afterDelete: async () => {
-    global.categoryId && await strapi.service('api::category.category').updateProducts(global.categoryId)
-    global.categoryId = undefined
+    await strapi.service('api::category.category').updateProducts(categoryId)
   }
 }
