@@ -1,18 +1,26 @@
-export const checkAvailable = async (inventory: number, available: number) => {
-  const { productId } = await searchProduct(inventory)
+export const actionCreateUpdate = async (inventory: number, available: number) => {
+  const { product } = await findProductIdInInventory(inventory)
 
-  const inventories = await searchInventories(productId.id)
-
-  const data = await validateAvailableQuantity(inventories)
-
-  updateAvailableProduct(productId.id, data)
+  checkAvailable(product.id, available)
 
   if (available <= 0) {
     inventorySoldOut(inventory)
   }
 }
 
-const searchProduct = async (inventory: number) => {
+export const actionDelete = async (product: number, available: number) => {
+  checkAvailable(product, available)
+}
+
+const checkAvailable = async (product: number, available: number) => {
+  const inventories = await searchInventories(product)
+
+  const data = await validateAvailableQuantity(inventories)
+
+  updateAvailableProduct(product, data)
+}
+
+export const findProductIdInInventory = async (inventory: number) => {
   return await strapi.db.query('api::inventory.inventory').findOne({
     where: { id: inventory },
     populate: ['product']
@@ -21,7 +29,7 @@ const searchProduct = async (inventory: number) => {
 
 const searchInventories = async (product: number) => {
   return await strapi.db.query('api::inventory.inventory').findMany({
-    where: { productId: product }
+    where: { product, status: 'Active' }
   })
 }
 

@@ -1,5 +1,5 @@
-import { Inventory } from "../api/inventory/interfaces/model"
-import { Product } from "../api/product/interfaces/model"
+import { Inventory } from '../api/inventory/interfaces/model'
+import { Product } from '../api/product/interfaces/model'
 
 export const PATH_UPDATE_ADMIN = '/content-manager/collection-types/'
 export const NOT_VALIDATE = ['/actions/publish', '/actions/unpublish', 'actions/bulkDelete']

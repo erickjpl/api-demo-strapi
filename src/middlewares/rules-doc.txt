@@ -2,10 +2,6 @@ digits:value
 The integer under validation must have an exact length of value.
 El número entero bajo validación debe tener una longitud exacta de valor.
 
-digits_between:min,max
-The integer validation must have a length between the given min and max.
-La validación de enteros debe tener una longitud entre el mínimo y el máximo dados.
-
 email
 The field under validation must be formatted as an email address.
 El campo bajo validación debe tener el formato de una dirección de correo electrónico.
