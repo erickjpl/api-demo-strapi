@@ -1,7 +1,12 @@
 import { MessageRulesEN, Modules, Rule, RuleConfig, ValidationError } from "../interfaces"
 
-export interface IValidator {
+interface IValidator {
   valid (): undefined | ValidationError<Modules> | ValidationError<Modules>[]
+}
+interface IRelationships {
+  canCreate: boolean
+  canUpdate: boolean
+  noRelationships: boolean
 }
 
 abstract class BaseValidator {
@@ -90,16 +95,18 @@ class GeneralValidator extends BaseValidator implements IValidator {
     }
   }
 
-  private getPropertyRelation (property?: Modules[keyof Modules]): { connect: boolean, disconnect: boolean } {
+  private getPropertyRelation (property?: Modules[keyof Modules]): IRelationships {
     const object = typeof property === 'object'
 
     const existConnect = object && 'connect' in property
-    const connect = existConnect && property.connect.length > 0
+    const canCreate = existConnect && property.connect.length > 0
 
     const existDisconnect = object && 'disconnect' in property
-    const disconnect = existDisconnect && property.disconnect.length > 0
+    const canUpdate = canCreate && existDisconnect && property.disconnect.length > 0
 
-    return { connect, disconnect }
+    const noRelationships = !canCreate && !canUpdate
+
+    return { canCreate, canUpdate, noRelationships }
   }
 
   private validate (ruleName: Rule, ruleValue: number, property?: Modules[keyof Modules]) {
@@ -145,9 +152,11 @@ class GeneralValidator extends BaseValidator implements IValidator {
       case 'string':
         return typeof property === 'string'
       case 'relation_creating':
-        return propertyRelation.connect
+        return propertyRelation.canCreate
       case 'relation_updating':
-        return propertyRelation.connect && propertyRelation.disconnect
+        if (propertyRelation.noRelationships) return true
+
+        return propertyRelation.canUpdate
       default:
         return true
     }

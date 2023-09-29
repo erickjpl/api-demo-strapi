@@ -1,3 +1,10 @@
+export const findProductIdInInventory = async (inventory: number) => {
+  return await strapi.db.query('api::inventory.inventory').findOne({
+    where: { id: inventory },
+    populate: ['product']
+  })
+}
+
 export const actionCreateUpdate = async (inventory: number, available: number) => {
   const { product } = await findProductIdInInventory(inventory)
 
@@ -18,13 +25,6 @@ const checkAvailable = async (product: number, available: number) => {
   const data = await validateAvailableQuantity(inventories)
 
   updateAvailableProduct(product, data)
-}
-
-export const findProductIdInInventory = async (inventory: number) => {
-  return await strapi.db.query('api::inventory.inventory').findOne({
-    where: { id: inventory },
-    populate: ['product']
-  })
 }
 
 const searchInventories = async (product: number) => {

@@ -5,7 +5,7 @@ let productId
 export default {
   afterCreate: async (event) => {
     const { data, where } = event.params
-    // actionCreateUpdate(where.id, data.available)
+    actionCreateUpdate(where.id, data.available)
   },
   afterUpdate: async (event) => {
     const { data, where } = event.params
@@ -19,7 +19,6 @@ export default {
     productId = product && product.id
   },
   afterDelete: async () => {
-    console.info({ productId })
     actionDelete(productId, 0)
   }
 }
