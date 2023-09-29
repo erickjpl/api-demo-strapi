@@ -2,7 +2,7 @@
  * `validator` middleware
  */
 
-import { Config, METHOD_HTTP, Modules, NOT_VALIDATE, PATH_UPDATE_ADMIN } from "./interfaces"
+import { Config, METHOD_HTTP, Modules, NOT_VALIDATE } from "./interfaces"
 import { validBody } from "./config"
 
 

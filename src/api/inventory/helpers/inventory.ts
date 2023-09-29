@@ -24,7 +24,7 @@ const checkAvailable = async (product: number, available: number) => {
 
   const data = await validateAvailableQuantity(inventories)
 
-  updateAvailableProduct(product, data)
+  await strapi.service('api::product.product').updateAvailableProduct(product, data)
 }
 
 const searchInventories = async (product: number) => {
@@ -42,13 +42,6 @@ const validateAvailableQuantity = async (inventories) => {
   if (availableQuantity > 0) return { available: availableQuantity, status: 'Active' }
 
   return { available: availableQuantity, status: 'Sold Out' }
-}
-
-const updateAvailableProduct = async (product: number, update) => {
-  await strapi.db.query('api::product.product').update({
-    where: { id: product },
-    data: { ...update }
-  })
 }
 
 const inventorySoldOut = async (inventory: number) => {
