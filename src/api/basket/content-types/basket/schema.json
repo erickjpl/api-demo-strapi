@@ -42,23 +42,14 @@
       "maxLength": 120
     },
     "promoCode": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
       "type": "string",
       "required": false,
-      "maxLength": 36
+      "maxLength": 12
     },
     "total": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "required": true,
-      "type": "decimal"
+      "required": false,
+      "type": "decimal",
+      "default": 0
     },
     "status": {
       "pluginOptions": {
@@ -119,7 +110,7 @@
       },
       "type": "string",
       "required": false,
-      "maxLength": 100
+      "maxLength": 120
     }
   }
 }

@@ -2,6 +2,7 @@ import { rulesWarehouse } from "../src/api/warehouse/rules";
 import { rulesCategory } from "../src/api/category/rules";
 import { rulesProduct } from "../src/api/product/rules";
 import { rulesInventory } from "../src/api/inventory/rules";
+import { rulesBasket } from "../src/api/basket/rules";
 
 export default [
   'strapi::errors',
@@ -34,6 +35,7 @@ export default [
       ...rulesCategory,
       ...rulesProduct,
       ...rulesInventory,
+      ...rulesBasket,
     ]
   }
 ];

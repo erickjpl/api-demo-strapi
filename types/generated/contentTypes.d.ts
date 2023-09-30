@@ -716,21 +716,10 @@ export interface ApiBasketBasket extends Schema.CollectionType {
         maxLength: 120;
       }>;
     promoCode: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
       Attribute.SetMinMaxLength<{
-        maxLength: 36;
+        maxLength: 12;
       }>;
-    total: Attribute.Decimal &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    total: Attribute.Decimal & Attribute.DefaultTo<0>;
     status: Attribute.Enumeration<
       [
         'Empty',
@@ -787,7 +776,7 @@ export interface ApiBasketBasket extends Schema.CollectionType {
         };
       }> &
       Attribute.SetMinMaxLength<{
-        maxLength: 100;
+        maxLength: 120;
       }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

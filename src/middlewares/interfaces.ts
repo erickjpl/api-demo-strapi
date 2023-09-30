@@ -1,3 +1,4 @@
+import { Basket } from '../api/basket/interfaces/model'
 import { Category } from '../api/category/interfaces/model'
 import { Inventory } from '../api/inventory/interfaces/model'
 import { Product } from '../api/product/interfaces/model'
@@ -56,7 +57,7 @@ export enum MessageRulesEN {
   relation_updating = 'The :attribute field is required and must send the identifier that you remove within the disconnection array and the identifier of the new record from the connection array.'
 }
 
-export type Modules = Warehouse | Category | Product | Inventory
+export type Modules = Warehouse | Category | Product | Inventory | Basket
 export type TYPE_STATUS = 'Active' | 'Inactive' | 'Sold Out'
 export type METHOD_HTTP = 'POST' | 'PUT'
 export type Rule =

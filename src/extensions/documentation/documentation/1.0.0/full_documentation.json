@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-09-30T04:31:11.710Z"
+    "x-generation-date": "2023-09-30T05:11:56.812Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -88,7 +88,6 @@
       },
       "BasketLocalizationRequest": {
         "required": [
-          "total",
           "status",
           "paymentStatus",
           "locale"
@@ -172,7 +171,6 @@
         "properties": {
           "data": {
             "required": [
-              "total",
               "status",
               "paymentStatus"
             ],
@@ -366,7 +364,6 @@
       "Basket": {
         "type": "object",
         "required": [
-          "total",
           "status",
           "paymentStatus"
         ],
