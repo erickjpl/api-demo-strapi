@@ -1,4 +1,4 @@
-import { actionCreateUpdate, actionDelete, findProductIdInInventory } from "../../helpers/inventory"
+import { actionCreateUpdate, actionDelete, findProductIdInInventory, validCanBeDeleted } from "../../helpers/inventory"
 
 let productIds
 
@@ -15,8 +15,8 @@ export default {
   },
   beforeDelete: async (event) => {
     const { where } = event.params
-    const { product } = await findProductIdInInventory(where.id)
-    productIds = product && product.id
+    await validCanBeDeleted(where.id)
+    productIds = await findProductIdInInventory(where.id)
   },
   afterDelete: async () => {
     actionDelete(productIds, 0)
@@ -24,6 +24,8 @@ export default {
   beforeDeleteMany: async (event) => {
     const { where } = event.params
     productIds = where['$and'][0]['id']['$in']
+    await validCanBeDeleted(productIds)
+    productIds = await findProductIdInInventory(productIds)
   },
   afterDeleteMany: async () => {
     productIds.forEach(productId => actionDelete(productId, 0))

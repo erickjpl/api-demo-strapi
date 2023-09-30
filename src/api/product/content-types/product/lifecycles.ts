@@ -55,10 +55,10 @@ const validCanBeDeleted = async (ids: number | number[]) => {
 }
 
 const searchCategoryRelatedToProduct = async (productIds: number | number[]) => {
-  const product = await strapi.db.query('api::product.product').findMany({
+  const products = await strapi.db.query('api::product.product').findMany({
     where: { id: productIds },
     populate: ['category']
   })
 
-  return product && typeof productIds === 'object' ? [...new Set(product.map((item) => item.category.id))] : product[0].category.id
+  return products && typeof productIds === 'object' ? [...new Set(products.map((item) => item.category.id))] : products[0].category.id
 }

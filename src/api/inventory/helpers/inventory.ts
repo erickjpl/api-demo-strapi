@@ -1,14 +1,26 @@
-export const findProductIdInInventory = async (inventory: number) => {
-  return await strapi.db.query('api::inventory.inventory').findOne({
-    where: { id: inventory },
+import { errors } from '@strapi/utils'
+const { ValidationError } = errors
+
+export const validCanBeDeleted = async (ids: number | number[]) => {
+  const result = await strapi.db.query('api::checkout.checkout').findMany({ where: { inventory: ids } })
+
+  if (result.length > 0)
+    throw new ValidationError('Product inventory cannot be deleted because it has associated sales.')
+}
+
+export const findProductIdInInventory = async (inventoryIds: number | number[]) => {
+  const inventories = await strapi.db.query('api::inventory.inventory').findMany({
+    where: { id: inventoryIds },
     populate: ['product']
   })
+
+  return inventories && typeof inventoryIds === 'object' ? [...new Set(inventories.map((item) => item.product.id))] : inventories[0].product.id
 }
 
 export const actionCreateUpdate = async (inventory: number, available: number) => {
-  const { product } = await findProductIdInInventory(inventory)
+  const product = await findProductIdInInventory(inventory)
 
-  checkAvailable(product.id, available)
+  checkAvailable(product, available)
 
   if (available <= 0) {
     inventorySoldOut(inventory)
