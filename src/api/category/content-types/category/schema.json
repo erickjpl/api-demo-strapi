@@ -18,18 +18,19 @@
       "unique": true,
       "maxLength": 80
     },
+    "slug": {
+      "type": "uid",
+      "targetField": "category",
+      "required": false
+    },
     "products": {
-      "required": true,
-      "type": "integer"
+      "required": false,
+      "type": "integer",
+      "default": 0
     },
     "description": {
       "type": "string",
       "maxLength": 180
-    },
-    "slug": {
-      "type": "uid",
-      "targetField": "category",
-      "required": true
     }
   }
 }

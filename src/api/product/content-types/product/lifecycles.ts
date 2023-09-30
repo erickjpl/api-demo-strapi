@@ -1,10 +1,11 @@
-import { searchCategoryRelatedToProduct } from "../../helpers/product"
+import { errors } from '@strapi/utils'
+const { ValidationError } = errors
 
-let categoryId
+let categoryIds
 
 export default {
   afterCreate: async (event) => {
-    const { where, data } = event.params
+    const { data } = event.params
 
     if ('category' in data && 'connect' in data.category && data.category.connect.length) {
       const connect = data.category.connect.reduce((acc, current) => (acc || current), undefined)
@@ -28,9 +29,36 @@ export default {
   },
   beforeDelete: async (event) => {
     const { where } = event.params
-    categoryId = await searchCategoryRelatedToProduct(where.id)
+    await validCanBeDeleted(where.id)
+    categoryIds = await searchCategoryRelatedToProduct(where.id)
   },
   afterDelete: async () => {
-    await strapi.service('api::category.category').updateProducts(categoryId)
+    await strapi.service('api::category.category').updateProducts(categoryIds)
+  },
+  beforeDeleteMany: async (event) => {
+    const { where } = event.params
+    const ids = where['$and'][0]['id']['$in']
+    await validCanBeDeleted(ids)
+    categoryIds = await searchCategoryRelatedToProduct(ids)
+  },
+  afterDeleteMany: async () => {
+    console.info({ categoryIds })
+    categoryIds.forEach((categoryId) => strapi.service('api::category.category').updateProducts(categoryId))
   }
+}
+
+const validCanBeDeleted = async (ids: number | number[]) => {
+  const result = await strapi.db.query('api::inventory.inventory').findMany({ where: { product: ids } })
+
+  if (result.length > 0)
+    throw new ValidationError('The product cannot be deleted because it has associated inventories.')
+}
+
+const searchCategoryRelatedToProduct = async (productIds: number | number[]) => {
+  const product = await strapi.db.query('api::product.product').findMany({
+    where: { id: productIds },
+    populate: ['category']
+  })
+
+  return product && typeof productIds === 'object' ? [...new Set(product.map((item) => item.category.id))] : product[0].category.id
 }

@@ -1,11 +1,11 @@
 import { actionCreateUpdate, actionDelete, findProductIdInInventory } from "../../helpers/inventory"
 
-let productId
+let productIds
 
 export default {
   afterCreate: async (event) => {
-    const { data, where } = event.params
-    actionCreateUpdate(where.id, data.available)
+    const { result } = event
+    actionCreateUpdate(result.id, result.available)
   },
   afterUpdate: async (event) => {
     const { data, where } = event.params
@@ -16,9 +16,16 @@ export default {
   beforeDelete: async (event) => {
     const { where } = event.params
     const { product } = await findProductIdInInventory(where.id)
-    productId = product && product.id
+    productIds = product && product.id
   },
   afterDelete: async () => {
-    actionDelete(productId, 0)
+    actionDelete(productIds, 0)
+  },
+  beforeDeleteMany: async (event) => {
+    const { where } = event.params
+    productIds = where['$and'][0]['id']['$in']
+  },
+  afterDeleteMany: async () => {
+    productIds.forEach(productId => actionDelete(productId, 0))
   }
 }

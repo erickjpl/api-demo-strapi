@@ -1,5 +1,7 @@
-import { rulesInventory } from "../src/api/inventory/rules";
+import { rulesWarehouse } from "../src/api/warehouse/rules";
+import { rulesCategory } from "../src/api/category/rules";
 import { rulesProduct } from "../src/api/product/rules";
+import { rulesInventory } from "../src/api/inventory/rules";
 
 export default [
   'strapi::errors',
@@ -28,8 +30,10 @@ export default [
   {
     name: 'global::validation-rules',
     config: [
+      ...rulesWarehouse,
+      ...rulesCategory,
+      ...rulesProduct,
       ...rulesInventory,
-      ...rulesProduct
     ]
   }
 ];

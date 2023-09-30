@@ -1,7 +1,7 @@
 import { errors } from '@strapi/utils'
+const { ValidationError } = errors
 import { Modules, Validation, ValidationError } from './interfaces'
 import { RequiredValidator, SometimesValidator } from './validations/Validator'
-const { ValidationError } = errors
 
 function requestFail<T extends Modules> (errors: ValidationError<T>[]) {
   const message = errors.length === 1 ? errors[0].message : `${errors.length} errors occurred.`

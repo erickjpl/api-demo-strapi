@@ -17,13 +17,13 @@ abstract class BaseValidator {
   ) {
   }
 
-  protected getPropertyValueIfExist (): undefined | Modules[keyof Modules] {
+  protected getPropertyValueIfExist (): Modules[keyof Modules] | undefined {
     const exists = this.attribute in this.body
 
     return !exists ? undefined : this.body[this.attribute]
   }
 
-  protected validPropertyValue<Modules> (propertyValue?: Modules[keyof Modules]) {
+  protected validPropertyValue (propertyValue) {
     return (typeof propertyValue === 'undefined')
       || (typeof propertyValue === 'object' && Object.keys(propertyValue).length === 0)
       || (typeof propertyValue === 'string' && propertyValue.length === 0)
@@ -46,7 +46,7 @@ export class SometimesValidator extends BaseValidator implements IValidator {
 export class RequiredValidator extends BaseValidator implements IValidator {
   valid (): undefined | ValidationError<Modules> | ValidationError<Modules>[] {
     const propertyValue = this.getPropertyValueIfExist()
-    const invalid = this.validPropertyValue<Modules>(propertyValue)
+    const invalid = this.validPropertyValue(propertyValue)
     const requiredRule = this.rules.find(({ rule }) => rule === 'required')
 
     if (requiredRule && invalid) {
@@ -82,7 +82,7 @@ class GeneralValidator extends BaseValidator implements IValidator {
     return errors.length > 0 ? errors : undefined
   }
 
-  private getPropertyValueSize (property?: Modules[keyof Modules]): number {
+  private getPropertyValueSize (property): number {
     switch (typeof property) {
       case 'undefined':
         return 0
@@ -95,7 +95,7 @@ class GeneralValidator extends BaseValidator implements IValidator {
     }
   }
 
-  private getPropertyRelation (property?: Modules[keyof Modules]): IRelationships {
+  private getPropertyRelation (property): IRelationships {
     const object = typeof property === 'object'
 
     const existConnect = object && 'connect' in property
@@ -109,7 +109,7 @@ class GeneralValidator extends BaseValidator implements IValidator {
     return { canCreate, canUpdate, noRelationships }
   }
 
-  private validate (ruleName: Rule, ruleValue: number, property?: Modules[keyof Modules]) {
+  private validate (ruleName: Rule, ruleValue: number, property) {
     const isNumber = typeof property === 'number'
     const propertyValueSize = this.getPropertyValueSize(property)
     const propertyRelation = this.getPropertyRelation(property)
@@ -118,7 +118,7 @@ class GeneralValidator extends BaseValidator implements IValidator {
       case 'digits':
         return isNumber && property === ruleValue
       case 'email':
-        return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(property.toString())
+        return typeof property === 'string' && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(property.toString())
       case 'filled':
         return !!property
       case 'gt':

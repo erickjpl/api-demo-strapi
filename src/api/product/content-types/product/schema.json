@@ -16,6 +16,11 @@
     }
   },
   "attributes": {
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category"
+    },
     "product": {
       "pluginOptions": {
         "i18n": {
@@ -27,10 +32,15 @@
       "maxLength": 80,
       "unique": true
     },
-    "category": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::category.category"
+    "slug": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "uid",
+      "targetField": "product",
+      "required": false
     },
     "price": {
       "pluginOptions": {
@@ -40,21 +50,6 @@
       },
       "type": "decimal",
       "required": true
-    },
-    "status": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "Active",
-        "Inactive",
-        "Sold Out"
-      ],
-      "required": true,
-      "default": "Active"
     },
     "available": {
       "pluginOptions": {
@@ -78,15 +73,20 @@
         }
       }
     },
-    "slug": {
+    "status": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "uid",
-      "targetField": "product",
-      "required": true
+      "type": "enumeration",
+      "enum": [
+        "Active",
+        "Inactive",
+        "Sold Out"
+      ],
+      "required": true,
+      "default": "Active"
     }
   }
 }

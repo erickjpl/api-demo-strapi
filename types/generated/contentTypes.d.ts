@@ -831,13 +831,12 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 80;
       }>;
-    products: Attribute.Integer & Attribute.Required;
+    slug: Attribute.UID<'api::category.category', 'category'>;
+    products: Attribute.Integer & Attribute.DefaultTo<0>;
     description: Attribute.String &
       Attribute.SetMinMaxLength<{
         maxLength: 180;
       }>;
-    slug: Attribute.UID<'api::category.category', 'category'> &
-      Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1014,6 +1013,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
     };
   };
   attributes: {
+    category: Attribute.Relation<
+      'api::product.product',
+      'manyToOne',
+      'api::category.category'
+    >;
     product: Attribute.String &
       Attribute.Required &
       Attribute.Unique &
@@ -1025,11 +1029,12 @@ export interface ApiProductProduct extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 80;
       }>;
-    category: Attribute.Relation<
-      'api::product.product',
-      'manyToOne',
-      'api::category.category'
-    >;
+    slug: Attribute.UID<'api::product.product', 'product'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     price: Attribute.Decimal &
       Attribute.Required &
       Attribute.SetPluginOptions<{
@@ -1037,14 +1042,6 @@ export interface ApiProductProduct extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    status: Attribute.Enumeration<['Active', 'Inactive', 'Sold Out']> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Attribute.DefaultTo<'Active'>;
     available: Attribute.Integer &
       Attribute.Required &
       Attribute.SetPluginOptions<{
@@ -1059,13 +1056,14 @@ export interface ApiProductProduct extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    slug: Attribute.UID<'api::product.product', 'product'> &
+    status: Attribute.Enumeration<['Active', 'Inactive', 'Sold Out']> &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
-      }>;
+      }> &
+      Attribute.DefaultTo<'Active'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1102,13 +1100,6 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    slug: Attribute.UID<'api::warehouse.warehouse', 'warehouse'> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     warehouse: Attribute.String &
       Attribute.Required &
       Attribute.SetPluginOptions<{
@@ -1118,6 +1109,12 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
       }> &
       Attribute.SetMinMaxLength<{
         maxLength: 50;
+      }>;
+    slug: Attribute.UID<'api::warehouse.warehouse', 'warehouse'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
       }>;
     address: Attribute.String &
       Attribute.SetPluginOptions<{
@@ -1129,8 +1126,9 @@ export interface ApiWarehouseWarehouse extends Schema.CollectionType {
         maxLength: 120;
       }>;
     classification: Attribute.Enumeration<['Principal', 'Subsidiary']> &
-      Attribute.Required &
       Attribute.DefaultTo<'Principal'>;
+    status: Attribute.Enumeration<['Active', 'Closed', 'Remodeling']> &
+      Attribute.DefaultTo<'Active'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
