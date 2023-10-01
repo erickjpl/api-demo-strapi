@@ -91,12 +91,14 @@ class GeneralValidator extends BaseValidator implements IValidator {
       case 'number':
         return property
       case 'object':
-        return Object.keys(property).length
+        return property ? Object.keys(property).length : 0
+      default:
+        return 0;
     }
   }
 
   private getPropertyRelation (property): IRelationships {
-    const object = typeof property === 'object'
+    const object = property && typeof property === 'object'
 
     const existConnect = object && 'connect' in property
     const canCreate = existConnect && property.connect.length > 0

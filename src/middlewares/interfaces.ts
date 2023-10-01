@@ -1,4 +1,4 @@
-import { Basket } from '../api/basket/interfaces/model'
+import { Basket, BasketItem } from '../api/basket/interfaces/model'
 import { Category } from '../api/category/interfaces/model'
 import { Inventory } from '../api/inventory/interfaces/model'
 import { Product } from '../api/product/interfaces/model'
@@ -57,7 +57,7 @@ export enum MessageRulesEN {
   relation_updating = 'The :attribute field is required and must send the identifier that you remove within the disconnection array and the identifier of the new record from the connection array.'
 }
 
-export type Modules = Warehouse | Category | Product | Inventory | Basket
+export type Modules = Warehouse | Category | Product | Inventory | Basket | BasketItem
 export type TYPE_STATUS = 'Active' | 'Inactive' | 'Sold Out'
 export type METHOD_HTTP = 'POST' | 'PUT'
 export type Rule =
@@ -109,7 +109,7 @@ export interface Config<T extends Modules> { path: string[], method: string, val
 
 interface Position { before: number, after: number, start: boolean, end: boolean }
 interface Reordering { id: number, position?: Position }
-export interface Relations { connect: Reordering[] | number[], disconnect: Reordering[] | number[] }
+export interface Relations { connect: Reordering[], disconnect: Reordering[] }
 export interface ValidationError<T extends Modules> {
   path: (keyof T)[];
   message: string;

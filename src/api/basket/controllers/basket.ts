@@ -3,13 +3,22 @@
  */
 
 import { factories } from '@strapi/strapi'
+import { useBasket } from '../helpers/basket'
 
 export default factories.createCoreController('api::basket.basket', ({ strapi }) => ({
   async create (ctx) {
-    const response = await super.create(ctx);
+    const helper = useBasket(strapi)
 
-    await strapi.service('api::checkout.checkout').update(ctx, response.data.id);
+    const { user, sanitizedQuery, sanitizedInputData } = await helper.validateRequest(ctx)
 
-    return response;
+    const basket = await helper.searchCustomerBasket(user)
+
+    const payload = helper.basketObjectToStore(user, sanitizedQuery, sanitizedInputData)
+
+    const entity = await helper.saveData(basket, payload)
+
+    helper.delegateItemRegistration(entity, sanitizedInputData)
+
+    return await helper.response(entity, ctx)
   }
-}));
+}))

@@ -111,6 +111,12 @@
       "type": "string",
       "required": false,
       "maxLength": 120
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::basket.basket-item",
+      "mappedBy": "basket"
     }
   }
 }

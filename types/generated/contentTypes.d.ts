@@ -778,6 +778,11 @@ export interface ApiBasketBasket extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 120;
       }>;
+    items: Attribute.Relation<
+      'api::basket.basket',
+      'oneToMany',
+      'api::basket.basket-item'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -799,6 +804,81 @@ export interface ApiBasketBasket extends Schema.CollectionType {
       'api::basket.basket'
     >;
     locale: Attribute.String;
+  };
+}
+
+export interface ApiBasketBasketItem extends Schema.CollectionType {
+  collectionName: 'basket_items';
+  info: {
+    singularName: 'basket-item';
+    pluralName: 'basket-items';
+    displayName: 'Basket Items';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    basket: Attribute.Relation<
+      'api::basket.basket-item',
+      'manyToOne',
+      'api::basket.basket'
+    >;
+    inventory: Attribute.Relation<
+      'api::basket.basket-item',
+      'manyToOne',
+      'api::inventory.inventory'
+    >;
+    quantity: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    price: Attribute.Decimal &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    discount: Attribute.Decimal &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    total: Attribute.Decimal &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    status: Attribute.Enumeration<['In Basket', 'In Favorites']> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.DefaultTo<'In Basket'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::basket.basket-item',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::basket.basket-item',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -1153,6 +1233,7 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::basket.basket': ApiBasketBasket;
+      'api::basket.basket-item': ApiBasketBasketItem;
       'api::category.category': ApiCategoryCategory;
       'api::checkout.checkout': ApiCheckoutCheckout;
       'api::inventory.inventory': ApiInventoryInventory;
