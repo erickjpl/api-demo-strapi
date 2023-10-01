@@ -1,25 +1,5 @@
-import { isObject } from 'lodash/fp'
-import { errors, parseMultipartData } from '@strapi/utils'
-const { ValidationError } = errors
-
 export function useBasket (strapi) {
-  const validateRequest = async (ctx) => {
-    await this.validateQuery(ctx)
-    const sanitizedQuery = await this.sanitizeQuery(ctx)
 
-    if (ctx.is('multipart'))
-      return parseMultipartData(ctx)
-
-    const { data } = ctx.request.body || {}
-    const { user } = data
-
-    if (!isObject(data))
-      throw new ValidationError('Missing "data" payload in the request body')
-
-    const sanitizedInputData = await this.sanitizeInput(data, ctx)
-
-    return { user, sanitizedQuery, sanitizedInputData }
-  }
 
   const searchCustomerBasket = async (user) => {
     return await strapi.db.query('api::basket.basket').findOne({
@@ -73,17 +53,10 @@ export function useBasket (strapi) {
       .syncItem(payload)
   }
 
-  const response = async (entity, ctx) => {
-    const sanitizedEntity = await this.sanitizeOutput(entity, ctx)
-    return this.transformResponse(sanitizedEntity)
-  }
-
   return {
-    validateRequest,
     searchCustomerBasket,
     basketObjectToStore,
     saveData,
-    delegateItemRegistration,
-    response
+    delegateItemRegistration
   }
 }
