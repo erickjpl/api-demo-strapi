@@ -6,7 +6,7 @@ export function useBasket (strapi) {
       select: ['id'],
       where: {
         user: user.connect[0].id,
-        status: 'Active'
+        basketStatus: 'Active'
       }
     })
   }
@@ -46,7 +46,7 @@ export function useBasket (strapi) {
     }
 
     if (sanitizedInputData.discount !== undefined) payload = { ...sanitizedInputData, discount: sanitizedInputData.discount }
-    if (sanitizedInputData.status !== undefined) payload = { ...sanitizedInputData, status: sanitizedInputData.status }
+    if (sanitizedInputData.itemStatus !== undefined) payload = { ...sanitizedInputData, itemStatus: sanitizedInputData.itemStatus }
 
     await strapi
       .service('api::basket.basket-item')

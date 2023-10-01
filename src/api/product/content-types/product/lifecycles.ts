@@ -42,7 +42,6 @@ export default {
     categoryIds = await searchCategoryRelatedToProduct(ids)
   },
   afterDeleteMany: async () => {
-    console.info({ categoryIds })
     categoryIds.forEach((categoryId) => strapi.service('api::category.category').updateProducts(categoryId))
   }
 }

@@ -14,20 +14,6 @@ export const rulesBasket: Config<Basket>[] = [
         ]
       },
       {
-        attribute: 'shippingAddress',
-        rules: [
-          { rule: 'sometimes' },
-          { rule: 'max', value: 120 }
-        ]
-      },
-      {
-        attribute: 'billingInformation',
-        rules: [
-          { rule: 'sometimes' },
-          { rule: 'max', value: 120 }
-        ]
-      },
-      {
         attribute: 'promoCode',
         rules: [
           { rule: 'sometimes' },
@@ -39,6 +25,12 @@ export const rulesBasket: Config<Basket>[] = [
         rules: [
           { rule: 'sometimes' },
           { rule: 'numeric' }
+        ]
+      },
+      {
+        attribute: 'basketStatus',
+        rules: [
+          { rule: 'sometimes' }
         ]
       }
     ]
@@ -55,20 +47,6 @@ export const rulesBasket: Config<Basket>[] = [
         ]
       },
       {
-        attribute: 'shippingAddress',
-        rules: [
-          { rule: 'sometimes' },
-          { rule: 'max', value: 120 }
-        ]
-      },
-      {
-        attribute: 'billingInformation',
-        rules: [
-          { rule: 'sometimes' },
-          { rule: 'max', value: 120 }
-        ]
-      },
-      {
         attribute: 'promoCode',
         rules: [
           { rule: 'sometimes' },
@@ -81,6 +59,12 @@ export const rulesBasket: Config<Basket>[] = [
           { rule: 'sometimes' },
           { rule: 'numeric' }
         ]
+      },
+      {
+        attribute: 'basketStatus',
+        rules: [
+          { rule: 'sometimes' }
+        ]
       }
     ]
   }
@@ -88,16 +72,9 @@ export const rulesBasket: Config<Basket>[] = [
 
 export const rulesBasketItems: Config<BasketItem>[] = [
   {
-    path: ['api::basket.basket-item', 'basket'],
+    path: ['api::basket.basket-item', 'baskets'],
     method: METHOD.POST,
     validations: [
-      {
-        attribute: 'basket',
-        rules: [
-          { rule: 'required' },
-          { rule: 'relation_creating' }
-        ]
-      },
       {
         attribute: 'inventory',
         rules: [
@@ -127,7 +104,7 @@ export const rulesBasketItems: Config<BasketItem>[] = [
         ]
       },
       {
-        attribute: 'status',
+        attribute: 'itemStatus',
         rules: [
           { rule: 'sometimes' }
         ]
@@ -139,13 +116,6 @@ export const rulesBasketItems: Config<BasketItem>[] = [
     method: METHOD.PUT,
     validations: [
       {
-        attribute: 'basket',
-        rules: [
-          { rule: 'sometimes' },
-          { rule: 'relation_creating' }
-        ]
-      },
-      {
         attribute: 'inventory',
         rules: [
           { rule: 'sometimes' },
@@ -174,7 +144,7 @@ export const rulesBasketItems: Config<BasketItem>[] = [
         ]
       },
       {
-        attribute: 'status',
+        attribute: 'itemStatus',
         rules: [
           { rule: 'sometimes' }
         ]
@@ -182,16 +152,9 @@ export const rulesBasketItems: Config<BasketItem>[] = [
     ]
   },
   {
-    path: ['basket/:id'],
+    path: ['baskets/:id'],
     method: METHOD.PUT,
     validations: [
-      {
-        attribute: 'basket',
-        rules: [
-          { rule: 'required' },
-          { rule: 'relation_creating' }
-        ]
-      },
       {
         attribute: 'inventory',
         rules: [
@@ -221,7 +184,7 @@ export const rulesBasketItems: Config<BasketItem>[] = [
         ]
       },
       {
-        attribute: 'status',
+        attribute: 'itemStatus',
         rules: [
           { rule: 'sometimes' }
         ]

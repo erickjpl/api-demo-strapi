@@ -21,26 +21,6 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user"
     },
-    "shippingAddress": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string",
-      "required": false,
-      "maxLength": 120
-    },
-    "billingInformation": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string",
-      "required": false,
-      "maxLength": 120
-    },
     "promoCode": {
       "type": "string",
       "required": false,
@@ -51,7 +31,7 @@
       "type": "decimal",
       "default": 0
     },
-    "status": {
+    "basketStatus": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -63,44 +43,10 @@
         "Active",
         "Inactive",
         "Abandoned",
-        "Saved for Later",
-        "On Hold",
-        "Pending Review",
-        "Ready for Checkout",
-        "In Favorite",
-        "Archived",
-        "Fulfilled"
+        "Processed"
       ],
       "required": true,
       "default": "Active"
-    },
-    "paymentStatus": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "Pending Payment",
-        "Payment Processing",
-        "Paid",
-        "Approved",
-        "Declined",
-        "Cancelled",
-        "Refund",
-        "Refunded",
-        "Waiting for Confirmation",
-        "Payment Issue",
-        "Payment Error",
-        "Payment Overdue",
-        "Authorization Pending",
-        "Bank Confirmation Pending",
-        "Partial Payment",
-        "Scheduled Payment"
-      ],
-      "required": true,
-      "default": "Pending Payment"
     },
     "notes": {
       "pluginOptions": {

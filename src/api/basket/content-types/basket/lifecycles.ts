@@ -14,7 +14,7 @@ export default {
 }
 
 const validCanBeDeleted = async (ids: number | number[]) => {
-  const result = await strapi.db.query('api::checkout.checkout').findMany({ where: { basket: ids } })
+  const result = await strapi.db.query('api::basket.basket-item').findMany({ where: { basket: ids } })
 
   if (result.length > 0)
     throw new ValidationError('The basket cannot be deleted because it has associated items.')

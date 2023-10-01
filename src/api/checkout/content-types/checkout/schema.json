@@ -16,51 +16,40 @@
     }
   },
   "attributes": {
-    "basket": {
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::basket.basket"
+      "target": "plugin::users-permissions.user"
     },
-    "inventory": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::inventory.inventory"
-    },
-    "quantity": {
+    "shippingAddress": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "integer",
-      "required": true
-    },
-    "price": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "decimal",
-      "required": true
-    },
-    "discount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "type": "string",
       "required": false,
-      "type": "decimal"
+      "maxLength": 120
+    },
+    "billingInformation": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": false,
+      "maxLength": 120
+    },
+    "promoCode": {
+      "type": "string",
+      "required": false,
+      "maxLength": 12
     },
     "total": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "required": true,
-      "type": "decimal"
+      "required": false,
+      "type": "decimal",
+      "default": 0
     },
     "status": {
       "pluginOptions": {
@@ -70,12 +59,64 @@
       },
       "type": "enumeration",
       "enum": [
+        "Empty",
         "Active",
-        "Returned",
-        "Canceled"
+        "Inactive",
+        "Abandoned",
+        "Saved for Later",
+        "On Hold",
+        "Pending Review",
+        "Ready for Checkout",
+        "In Favorite",
+        "Archived",
+        "Fulfilled"
       ],
       "required": true,
       "default": "Active"
+    },
+    "paymentStatus": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Pending Payment",
+        "Payment Processing",
+        "Paid",
+        "Approved",
+        "Declined",
+        "Cancelled",
+        "Refund",
+        "Refunded",
+        "Waiting for Confirmation",
+        "Payment Issue",
+        "Payment Error",
+        "Payment Overdue",
+        "Authorization Pending",
+        "Bank Confirmation Pending",
+        "Partial Payment",
+        "Scheduled Payment"
+      ],
+      "required": true,
+      "default": "Pending Payment"
+    },
+    "notes": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": false,
+      "maxLength": 120
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::basket.basket-item",
+      "mappedBy": "basket"
     }
   }
 }
